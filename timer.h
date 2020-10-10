@@ -19,8 +19,8 @@
 #define MAX_TIMERS (128)
 #define SECONDS(s) ((1000 * s))
 
-typedef struct timer timer_t;
-typedef bool (*timer_callback_t)(timer_t*, uint32_t);
+typedef struct timer timer;
+typedef bool (*timer_callback_t)(timer*, uint32_t);
 
 typedef struct timer {
     uint8_t id;
@@ -29,16 +29,16 @@ typedef struct timer {
     uint32_t duration;
     uint32_t expiry_ticks;
     timer_callback_t callback;
-} timer_t;
+} timer;
 
 void timer_init();
 
-timer_t* timer_start(
+timer* timer_start(
     uint32_t ticks,
     uint32_t duration,
     timer_callback_t callback,
     void* user);
 
-void timer_stop(timer_t* timer);
+void timer_stop(timer* timer);
 
 void timer_update(uint32_t ticks);

@@ -236,13 +236,13 @@ static states_t s_states[MAX_ATTRACT_STATES] = {
 
 typedef struct {
     bool active;
-    timer_t* timer;
+    timer* timer;
     uint8_t state_index;
 } attract_state_t;
 
 static attract_state_t s_attract_state;
 
-static bool attract_timer_callback(timer_t* timer, uint32_t ticks) {
+static bool attract_timer_callback(timer* timer, uint32_t ticks) {
     if (!s_attract_state.active)
         return true;
 
@@ -297,12 +297,12 @@ static bool kong_climb_anim_callback(actor_t* actor) {
 typedef struct {
     uint16_t tile;
     uint8_t palette;
-    timer_t* timer;
+    timer* timer;
 } boot_state_t;
 
 static boot_state_t s_boot_state;
 
-static bool boot_timer_callback(timer_t* timer, uint32_t ticks) {
+static bool boot_timer_callback(timer* timer, uint32_t ticks) {
     if (s_boot_state.palette < 64) {
         s_boot_state.palette += 2;
         return true;
@@ -454,11 +454,11 @@ static bool insert_coin_leave(state_context_t* context) {
 // Title State
 //
 // ----------------------------------------------------------------------------
-static timer_t* s_title_timer = NULL;
+static timer* s_title_timer = NULL;
 
 static uint8_t s_title_palette = 0;
 
-static bool title_timer_callback(timer_t* timer, uint32_t ticks) {
+static bool title_timer_callback(timer* timer, uint32_t ticks) {
     if (s_title_palette < PALETTE_MAX - 1)
         s_title_palette++;
     else
@@ -726,7 +726,7 @@ typedef struct {
     uint8_t row;
 } level_elevation_t;
 
-static timer_t* s_how_high_duration = NULL;
+static timer* s_how_high_duration = NULL;
 
 static level_elevation_t s_level_elevations[] = {
     {1, 1, 25}, // level 1, stage 1
@@ -763,7 +763,7 @@ static const level_elevation_t* elevation(const player_t* player) {
     return NULL;
 }
 
-static bool how_high_timer_callback(timer_t* timer, uint32_t ticks) {
+static bool how_high_timer_callback(timer* timer, uint32_t ticks) {
     s_how_high_duration = NULL;
 
     state_context_t* context = (state_context_t*) timer->user;
@@ -840,12 +840,12 @@ typedef enum {
     intro_kong_wait
 } kong_intro_state_t;
 
-static timer_t* s_climb_timer = NULL;
+static timer* s_climb_timer = NULL;
 static uint8_t s_kong_jump_count = 5;
 static int8_t s_kong_jump_delta = -3;
 static kong_intro_state_t s_kong_intro_state;
 
-static bool kong_climb_timer_callback(timer_t* timer, uint32_t ticks) {
+static bool kong_climb_timer_callback(timer* timer, uint32_t ticks) {
     actor_t* donkey_kong = actor(actor_donkey_kong);
 
     switch (s_kong_intro_state) {
@@ -994,7 +994,7 @@ typedef struct tile_editor_state {
     bool cursor_visible;
     grid_value_t palette;
     uint16_t cursor_frames;
-    timer_t* message_timer;
+    timer* message_timer;
     tile_editor_action_t action;
     bg_control_block_t* copy_buffer;
 } tile_editor_state_t;
@@ -1062,7 +1062,7 @@ static copy_range_t s_copy_range;
 static grid_value_t s_palette_undo;
 static tile_editor_state_t s_tile_editor;
 
-static bool message_timer_callback(timer_t* timer, uint32_t ticks) {
+static bool message_timer_callback(timer* timer, uint32_t ticks) {
     s_tile_editor.message_timer = NULL;
     return false;
 }

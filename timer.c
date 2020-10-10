@@ -14,11 +14,11 @@
 #include "timer.h"
 #include "log.h"
 
-static timer_t s_timers[128];
+static timer s_timers[128];
 
 static uint32_t s_current_timer;
 
-static timer_t* find_free_timer() {
+static timer* find_free_timer() {
     for (uint8_t i = 0; i < s_current_timer; i++) {
         if (!s_timers[i].active)
             return &s_timers[i];
@@ -39,12 +39,12 @@ void timer_init() {
     }
 }
 
-timer_t* timer_start(
+timer* timer_start(
         uint32_t ticks,
         uint32_t duration,
         timer_callback_t callback,
         void* user) {
-    timer_t* timer = find_free_timer();
+    timer* timer = find_free_timer();
     if (timer == NULL)
         return NULL;
 
@@ -57,7 +57,7 @@ timer_t* timer_start(
     return timer;
 }
 
-void timer_stop(timer_t* timer) {
+void timer_stop(timer* timer) {
     if (timer == NULL)
         return;
     timer->active = false;
@@ -65,7 +65,7 @@ void timer_stop(timer_t* timer) {
 
 void timer_update(uint32_t ticks) {
     for (uint8_t i = 0; i < s_current_timer; i++) {
-        timer_t* timer = &s_timers[i];
+        timer* timer = &s_timers[i];
 
         if (!timer->active)
             continue;
